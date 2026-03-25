@@ -56,20 +56,16 @@ export function ResumeForm({ value, onChange }: Props) {
 
       <textarea
         rows={3}
-        placeholder="Skills (comma or newline separated)"
-        value={skillsText}
+        placeholder="Skills (comma-separated)"
+        value={value.skills.join(', ')}
         onChange={(e) =>
-          {
-            const nextText = e.target.value;
-            setSkillsText(nextText);
-            onChange({
-              ...value,
-              skills: nextText
-                .split(/[,\n]/)
-                .map((s) => s.trim())
-                .filter(Boolean),
-            });
-          }
+          onChange({
+            ...value,
+            skills: e.target.value
+              .split(',')
+              .map((s) => s.trim())
+              .filter(Boolean),
+          })
         }
       />
 
