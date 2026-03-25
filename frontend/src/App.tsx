@@ -31,27 +31,28 @@ export default function App() {
     fetchTemplates().then(setTemplates).catch(() => setStatus('Failed to load templates'));
   }, []);
 
-  async function saveResume() {
+  async function saveResume(): Promise<string | null> {
     try {
       setStatus('Saving...');
       if (!resumeId) {
         const created = await createResume(resume);
         setResumeId(created.id);
+        setStatus('Saved');
+        return created.id;
       } else {
         await updateResume(resumeId, resume);
+        setStatus('Saved');
+        return resumeId;
       }
-      setStatus('Saved');
     } catch {
       setStatus('Save failed');
+      return null;
     }
   }
 
   async function downloadPdf() {
     try {
-      if (!resumeId) {
-        await saveResume();
-      }
-      const id = resumeId;
+      const id = resumeId ?? (await saveResume());
       if (!id) {
         setStatus('Please save first');
         return;
