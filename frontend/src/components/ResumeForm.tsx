@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import type { ResumeData } from '../types/resume';
 
 type Props = {
@@ -9,6 +10,11 @@ export function ResumeForm({ value, onChange }: Props) {
   const exp = value.experience[0];
   const edu = value.education[0];
   const cert = value.certifications[0];
+  const [skillsText, setSkillsText] = useState(value.skills.join(', '));
+
+  useEffect(() => {
+    setSkillsText(value.skills.join(', '));
+  }, [value.skills]);
 
   return (
     <section>
